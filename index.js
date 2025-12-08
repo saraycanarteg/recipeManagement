@@ -43,9 +43,10 @@ const routes = {
         'PATCH /dishdash/recipe/:id/restore'
     ]
 };
-app.get('/dishdash', (req, res) => {
+app.get('/', (req, res) => {
     res.json({
         message: 'DishDash API',
+        baseUrl: 'https://recipemanagement-caj9.onrender.com',
         routes: routes
     });
 });
