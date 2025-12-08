@@ -17,8 +17,8 @@ const recipeSchema = new mongoose.Schema(
 
     instructions: [{ type: String, required: true }],
 
-    costPerServing: { type: Number, required: true },
-    pricePerServing: { type: Number, required: true },
+    costPerServing: { type: Number },
+    pricePerServing: { type: Number },
 
     category: { type: String, required: true },
 
@@ -28,6 +28,19 @@ const recipeSchema = new mongoose.Schema(
 {
     collection: 'recipe',
     timestamps: true
+});
+
+recipeSchema.pre("save", function(next) {
+    let totalCost = 0;
+
+    this.ingredients.forEach(ing => {
+        totalCost += ing.quantity * 0.01; // Tu fórmula
+    });
+
+    this.costPerServing = totalCost;
+    this.pricePerServing = totalCost * 2;
+
+    next();
 });
 
 module.exports = mongoose.model('Recipe', recipeSchema);
