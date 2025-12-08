@@ -11,11 +11,45 @@ db.once('open', () => console.log('Connected to Database'));
 
 app.use(express.json());
 
-// Inicializar Passport
 const passport = require('./config/passport');
 app.use(passport.initialize());
 
-// Rutas de autenticación
+const routes = {
+    auth: [
+        'GET /dishdash/auth/google',
+        'GET /dishdash/auth/google/callback',
+        'GET /dishdash/auth/failure',
+        'GET /dishdash/auth/verify'
+    ],
+    ingredients: [
+        'GET /dishdash/ingredients',
+        'GET /dishdash/ingredients/category/:category',
+        'GET /dishdash/ingredients/:productId',
+        'GET /dishdash/ingredients/name/:name',
+        'POST /dishdash/ingredient',
+        'PUT /dishdash/ingredient/:productId',
+        'DELETE /dishdash/ingredient/:productId',
+        'PATCH /dishdash/ingredient/:productId/restore'
+    ],
+    recipes: [
+        'GET /dishdash/recipes',
+        'GET /dishdash/recipes/category/:category',
+        'GET /dishdash/recipes/name/:name',
+        'GET /dishdash/recipes/:id',
+        'POST /dishdash/recipe',
+        'PUT /dishdash/recipe/:id',
+        'DELETE /dishdash/recipe/:id',
+        'DELETE /dishdash/recipe/:id/force',
+        'PATCH /dishdash/recipe/:id/restore'
+    ]
+};
+app.get('/dishdash', (req, res) => {
+    res.json({
+        message: 'DishDash API',
+        routes: routes
+    });
+});
+
 const authRoutes = require('./routes/authRoutes');
 app.use('/dishdash', authRoutes);
 
