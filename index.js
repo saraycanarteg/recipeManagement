@@ -41,6 +41,15 @@ const routes = {
         'DELETE /dishdash/recipe/:id',
         'DELETE /dishdash/recipe/:id/force',
         'PATCH /dishdash/recipe/:id/restore'
+    ],
+    units: [
+        'GET /dishdash/units',
+        'GET /dishdash/unitsall'
+    ],
+    conversions: [
+        'GET /dishdash/conversions',
+        'POST /dishdash/conversion',
+        'POST /dishdash/conversion/kitchen'
     ]
 };
 app.get('/', (req, res) => {
@@ -58,6 +67,11 @@ const ingredientRoutes = require('./routes/ingredientRoutes');
 app.use('/dishdash', ingredientRoutes);
 const recipeRoutes = require('./routes/recipeRoutes');
 app.use('/dishdash', recipeRoutes);
+const unitsRoutes = require('./routes/unitsRoutes');
+app.use('/dishdash', unitsRoutes);
+
+const conversionsRoutes = require('./routes/conversionRoutes');
+app.use('/dishdash', conversionsRoutes);
 
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));

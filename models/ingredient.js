@@ -12,6 +12,7 @@ const ingredientSchema = new mongoose.Schema(
         price: {type: Number, required: true},
         availableUnits: {type: Number, required: true},
         supplier: {type: String, required: true},
+        density: {type: Number, required: false},
         isActive: {type: Boolean, required: true, default: true},
         deletedAt: {type: Date, default: null}
 },
