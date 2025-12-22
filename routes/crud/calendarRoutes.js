@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Quotation = require('../models/quotation');
-const { createClientMeetingEvent } = require('../controllers/calendarBusinessController');
+const Quotation = require('../../models/quotation');
+const { createClientMeetingEvent } = require('../../controllers/calendarBusinessController');
 
 router.post('/calendar/meeting', async (req, res) => {
     try {

@@ -20,10 +20,13 @@ app.use('/dishdash', authRoutes);
 const ingredientRoutes = require('./routes/crud/ingredientCrudRoutes');
 app.use('/dishdash', ingredientRoutes);
 
-const recipeRoutes = require('./routes/recipeRoutes');
-app.use('/dishdash', recipeRoutes);
+const recipeCrudRoutes = require('./routes/crud/recipeCrudRoutes');
+app.use('/dishdash', recipeCrudRoutes);
 
-const unitsRoutes = require('./routes/unitsRoutes');
+const recipeBusinessRoutes = require('./routes/business/recipeBusinessRoutes');
+app.use('/dishdash', recipeBusinessRoutes);
+
+const unitsRoutes = require('./routes/unitsCrudRoutes');
 app.use('/dishdash', unitsRoutes);
 
 const conversionCrudRoutes = require('./routes/crud/conversionCrudRoutes');
@@ -53,7 +56,7 @@ app.use('/dishdash', calendarCrudRoutes);
 const calendarBusinessRoutes = require('./routes/business/calendarBusinessRoutes');
 app.use('/dishdash', calendarBusinessRoutes);
 
-const calendarMeetingRoutes = require('./routes/calendar');
+const calendarMeetingRoutes = require('./routes/crud/calendar');
 app.use('/dishdash', calendarMeetingRoutes);
 
 

@@ -65,30 +65,6 @@ exports.completeEvent = async (req, res) => {
     }
 };
 
-exports.getUpcomingEvents = async (req, res) => {
-    try {
-        const events = await CalendarEvent.find({
-            startDate: { $gte: new Date() }
-        }).sort({ startDate: 1 });
-
-        res.json(events);
-    } catch (error) {
-        res.status(500).json({ message: "Error fetching events", error: error.message });
-    }
-};
-
-exports.getQuotationTimeline = async (req, res) => {
-    try {
-        const events = await CalendarEvent.find({
-            quotationId: req.params.quotationId
-        }).sort({ startDate: 1 });
-
-        res.json(events);
-    } catch (error) {
-        res.status(500).json({ message: "Error fetching timeline", error: error.message });
-    }
-};
-
 exports.createEventFromQuotation = async (req, res) => {
     try {
         const quotation = await Quotation.findById(req.params.id);
