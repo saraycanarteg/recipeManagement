@@ -1,6 +1,5 @@
 const CalendarEvent = require('../models/calendarEvent');
 
-// Crear evento
 exports.createEvent = async (req, res) => {
     try {
         const event = await CalendarEvent.create(req.body);
@@ -10,7 +9,6 @@ exports.createEvent = async (req, res) => {
     }
 };
 
-// Obtener todos
 exports.getEvents = async (req, res) => {
     try {
         const events = await CalendarEvent.find().sort({ startDate: 1 });
@@ -20,7 +18,6 @@ exports.getEvents = async (req, res) => {
     }
 };
 
-// Obtener por ID
 exports.getEventById = async (req, res) => {
     try {
         const event = await CalendarEvent.findById(req.params.id);
@@ -32,7 +29,6 @@ exports.getEventById = async (req, res) => {
     }
 };
 
-// Actualizar
 exports.updateEvent = async (req, res) => {
     try {
         const allowedFields = ["title", "startDate", "type", "color", "icon", "status"];
@@ -56,7 +52,6 @@ exports.updateEvent = async (req, res) => {
     }
 };
 
-// Eliminar
 exports.deleteEvent = async (req, res) => {
     try {
         const deleted = await CalendarEvent.findByIdAndDelete(req.params.id);
@@ -69,7 +64,6 @@ exports.deleteEvent = async (req, res) => {
     }
 };
 
-// Filtros
 exports.getByQuotation = async (req, res) => {
     try {
         const events = await CalendarEvent.find({ quotationId: req.params.quotationId });
