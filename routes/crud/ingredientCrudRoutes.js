@@ -1,5 +1,5 @@
 const express = require('express');
-const Ingredient = require('../models/ingredient'); 
+const Ingredient = require('../../models/ingredient'); 
 const router = express.Router();
 
 router.get('/ingredients', async(req, res) => { 

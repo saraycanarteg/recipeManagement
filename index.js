@@ -17,7 +17,7 @@ app.use(passport.initialize());
 const authRoutes = require('./routes/authRoutes');
 app.use('/dishdash', authRoutes);
 
-const ingredientRoutes = require('./routes/ingredientRoutes');
+const ingredientRoutes = require('./routes/crud/ingredientCrudRoutes');
 app.use('/dishdash', ingredientRoutes);
 
 const recipeRoutes = require('./routes/recipeRoutes');
@@ -118,7 +118,6 @@ app.get('/', (req, res) => {
 			POST_client_request: '/dishdash/quotations/client-request',
 			POST_chef_calculate: '/dishdash/quotations/chef-calculate',
 			POST_chef_quotation: '/dishdash/quotations/chef-quotation',
-			POST: '/dishdash/quotations',
 			GET: '/dishdash/quotations',
 			GET_by_id: '/dishdash/quotations/:id',
 			PUT: '/dishdash/quotations/:id',
