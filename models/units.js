@@ -5,7 +5,6 @@ const unitSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
-        // g, kg, ml, cup, tbsp...
     },
 
     type: {

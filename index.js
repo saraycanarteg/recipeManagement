@@ -56,7 +56,7 @@ app.use('/dishdash', calendarCrudRoutes);
 const calendarBusinessRoutes = require('./routes/business/calendarBusinessRoutes');
 app.use('/dishdash', calendarBusinessRoutes);
 
-const calendarMeetingRoutes = require('./routes/crud/calendar');
+const calendarMeetingRoutes = require('./routes/crud/calendarRoutes');
 app.use('/dishdash', calendarMeetingRoutes);
 
 
