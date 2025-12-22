@@ -1,5 +1,3 @@
-const express = require('express');
-const router = express.Router();
 const Recipe = require('../models/recipe');
 const Ingredient = require('../models/ingredient');
 const Unit = require('../models/units');
@@ -32,49 +30,7 @@ async function convert(value, from, to, density = 1) {
     throw new Error('Unsupported conversion');
 }
 
-router.get('/scaled-recipes', async (req, res) => {
-    try {
-        const scaledRecipes = await ScaledRecipe.find({ isActive: true })
-            .sort({ createdAt: -1 });
-
-        res.json(scaledRecipes);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
-
-router.get('/scaled-recipes/recipe/:recipeId', async (req, res) => {
-    try {
-        const scaledRecipes = await ScaledRecipe.find({ 
-            recipeId: req.params.recipeId,
-            isActive: true 
-        }).sort({ createdAt: -1 });
-
-        if (scaledRecipes.length === 0) {
-            return res.status(404).json({ message: 'No scaled recipes found for this recipe' });
-        }
-
-        res.json(scaledRecipes);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
-
-router.get('/scaled-recipes/:id', async (req, res) => {
-    try {
-        const scaledRecipe = await ScaledRecipe.findById(req.params.id);
-        
-        if (!scaledRecipe || !scaledRecipe.isActive) {
-            return res.status(404).json({ message: 'Scaled recipe not found' });
-        }
-
-        res.json(scaledRecipe);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
-
-router.post('/recipe/:id/scale', async (req, res) => {
+exports.scaleRecipe = async (req, res) => {
     try {
         const { newServings, profitMargin } = req.body;
 
@@ -220,27 +176,7 @@ router.post('/recipe/:id/scale', async (req, res) => {
             scaledRecipe: savedScaledRecipe
         });
 
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+    } catch (error) {
+        res.status(500).json({ message: "Error scaling recipe", error: error.message });
     }
-});
-
-router.delete('/scaled-recipes/:id', async (req, res) => {
-    try {
-        const scaledRecipe = await ScaledRecipe.findById(req.params.id);
-        
-        if (!scaledRecipe) {
-            return res.status(404).json({ message: 'Scaled recipe not found' });
-        }
-
-        scaledRecipe.isActive = false;
-        scaledRecipe.deletedAt = new Date();
-        await scaledRecipe.save();
-
-        res.json({ message: 'Scaled recipe deactivated successfully', scaledRecipe });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
-
-module.exports = router;
+};

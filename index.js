@@ -14,50 +14,58 @@ app.use(express.json());
 const passport = require('./config/passport');
 app.use(passport.initialize());
 
-const authRoutes = require('./routes/authRoutes');
-app.use('/dishdash', authRoutes);
+const authenticateToken = require('./middleware/auth');
+
+const authBusinessRoutes = require('./routes/business/authBusinessRoutes');
+app.use('/dishdash', authBusinessRoutes);
+
+const userCrudRoutes = require('./routes/crud/userCrudRoutes');
+app.use('/dishdash', authenticateToken, userCrudRoutes);
 
 const ingredientRoutes = require('./routes/crud/ingredientCrudRoutes');
-app.use('/dishdash', ingredientRoutes);
+app.use('/dishdash', authenticateToken, ingredientRoutes);
 
 const recipeCrudRoutes = require('./routes/crud/recipeCrudRoutes');
-app.use('/dishdash', recipeCrudRoutes);
+app.use('/dishdash', authenticateToken, recipeCrudRoutes);
 
 const recipeBusinessRoutes = require('./routes/business/recipeBusinessRoutes');
-app.use('/dishdash', recipeBusinessRoutes);
+app.use('/dishdash', authenticateToken, recipeBusinessRoutes);
 
 const unitsRoutes = require('./routes/crud/unitsCrudRoutes');
-app.use('/dishdash', unitsRoutes);
+app.use('/dishdash', authenticateToken, unitsRoutes);
 
 const conversionCrudRoutes = require('./routes/crud/conversionCrudRoutes');
-app.use('/dishdash', conversionCrudRoutes);
+app.use('/dishdash', authenticateToken, conversionCrudRoutes);
 
 const conversionBusinessRoutes = require('./routes/business/conversionBusinessRoutes');
-app.use('/dishdash', conversionBusinessRoutes);
+app.use('/dishdash', authenticateToken, conversionBusinessRoutes);
 
-const scaledRecipeRoutes = require('./routes/scaledRecipeRoutes');
-app.use('/dishdash', scaledRecipeRoutes);
+const scaledRecipeCrudRoutes = require('./routes/crud/scaledRecipeCrudRoutes');
+app.use('/dishdash', authenticateToken, scaledRecipeCrudRoutes);
+
+const scaledRecipeBusinessRoutes = require('./routes/business/scaledRecipeBusinessRoutes');
+app.use('/dishdash', authenticateToken, scaledRecipeBusinessRoutes);
 
 const costAnalysisCrudRoutes = require('./routes/crud/costAnalysisCrudRoutes');
-app.use('/dishdash', costAnalysisCrudRoutes);
+app.use('/dishdash', authenticateToken, costAnalysisCrudRoutes);
 
 const costAnalysisBusinessRoutes = require('./routes/business/costAnalysisBusinessRoutes');
-app.use('/dishdash', costAnalysisBusinessRoutes);
+app.use('/dishdash', authenticateToken, costAnalysisBusinessRoutes);
 
 const quotationCrudRoutes = require('./routes/crud/quotationCrudRoutes');
-app.use('/dishdash', quotationCrudRoutes);
+app.use('/dishdash', authenticateToken, quotationCrudRoutes);
 
 const quotationBusinessRoutes = require('./routes/business/quotationBusinessRoutes');
-app.use('/dishdash', quotationBusinessRoutes);
+app.use('/dishdash', authenticateToken, quotationBusinessRoutes);
 
 const calendarCrudRoutes = require('./routes/crud/calendarCrudRoutes');
-app.use('/dishdash', calendarCrudRoutes);
+app.use('/dishdash', authenticateToken, calendarCrudRoutes);
 
 const calendarBusinessRoutes = require('./routes/business/calendarBusinessRoutes');
-app.use('/dishdash', calendarBusinessRoutes);
+app.use('/dishdash', authenticateToken, calendarBusinessRoutes);
 
 const calendarMeetingRoutes = require('./routes/crud/calendarRoutes');
-app.use('/dishdash', calendarMeetingRoutes);
+app.use('/dishdash', authenticateToken, calendarMeetingRoutes);
 
 
 
@@ -107,6 +115,13 @@ app.get('/', (req, res) => {
 			GET_google_callback: '/dishdash/auth/google/callback',
 			GET_failure: '/dishdash/auth/failure',
 			GET_verify: '/dishdash/auth/verify'
+		},
+		users: {
+			GET: '/dishdash/users',
+			GET_by_email: '/dishdash/users/email/:email',
+			GET_by_id: '/dishdash/users/:id',
+			PUT: '/dishdash/users/:id',
+			DELETE: '/dishdash/users/:id'
 		},
 		costanalysis: {
 			POST_calculate: '/dishdash/costanalysis/calculate',
