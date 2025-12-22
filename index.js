@@ -47,6 +47,17 @@ app.use('/dishdash', quotationCrudRoutes);
 const quotationBusinessRoutes = require('./routes/business/quotationBusinessRoutes');
 app.use('/dishdash', quotationBusinessRoutes);
 
+const calendarCrudRoutes = require('./routes/crud/calendarCrudRoutes');
+app.use('/dishdash', calendarCrudRoutes);
+
+const calendarBusinessRoutes = require('./routes/business/calendarBusinessRoutes');
+app.use('/dishdash', calendarBusinessRoutes);
+
+const calendarMeetingRoutes = require('./routes/calendar');
+app.use('/dishdash', calendarMeetingRoutes);
+
+
+
 app.get('/', (req, res) => {
 	res.json({
 		ingredients: {
@@ -113,6 +124,20 @@ app.get('/', (req, res) => {
 			PUT: '/dishdash/quotations/:id',
 			PATCH_status: '/dishdash/quotations/:id/status',
 			DELETE: '/dishdash/quotations/:id'
+		},
+		calendar: {
+			POST :   '/dishdash/calendar/events',
+			GET   :  '/dishdash/calendar/events',
+			GET    : '/dishdash/calendar/events/:id',
+			PUT     :'/dishdash/calendar/events/:id',
+			DELETE : '/dishdash/calendar/events/:id',
+			GET     :'/dishdash/calendar/events/quotation/:quotationId',
+			GET     :'/dishdash/calendar/events/recipe/:recipeId',
+			PATCH   :'/dishdash/calendar/events/:id/complete',
+			GET     :'/dishdash/calendar/events/upcoming',
+			GET     :'/dishdash/calendar/timeline/:quotationId',
+			POST    :'/dishdash/calendar/events/create-from-quotation/:id',
+			POST    :'/dishdash/calendar/meeting'
 		}
 	});
 });
