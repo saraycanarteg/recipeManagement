@@ -15,57 +15,62 @@ const passport = require('./config/passport');
 app.use(passport.initialize());
 
 const authenticateToken = require('./middleware/auth');
+const authorizeRoles = require('./middleware/authorizeRoles');
 
+// Rutas de autenticación (sin protección)
 const authBusinessRoutes = require('./routes/business/authBusinessRoutes');
 app.use('/dishdash', authBusinessRoutes);
 
+// Rutas solo para chef
 const userCrudRoutes = require('./routes/crud/userCrudRoutes');
-app.use('/dishdash', authenticateToken, userCrudRoutes);
+app.use('/dishdash', authenticateToken, authorizeRoles('chef'), userCrudRoutes);
 
 const ingredientRoutes = require('./routes/crud/ingredientCrudRoutes');
-app.use('/dishdash', authenticateToken, ingredientRoutes);
+app.use('/dishdash', authenticateToken, authorizeRoles('chef'), ingredientRoutes);
 
+const unitsRoutes = require('./routes/crud/unitsCrudRoutes');
+app.use('/dishdash', authenticateToken, authorizeRoles('chef'), unitsRoutes);
+
+const conversionCrudRoutes = require('./routes/crud/conversionCrudRoutes');
+app.use('/dishdash', authenticateToken, authorizeRoles('chef'), conversionCrudRoutes);
+
+const conversionBusinessRoutes = require('./routes/business/conversionBusinessRoutes');
+app.use('/dishdash', authenticateToken, authorizeRoles('chef'), conversionBusinessRoutes);
+
+const scaledRecipeCrudRoutes = require('./routes/crud/scaledRecipeCrudRoutes');
+app.use('/dishdash', authenticateToken, authorizeRoles('chef'), scaledRecipeCrudRoutes);
+
+const scaledRecipeBusinessRoutes = require('./routes/business/scaledRecipeBusinessRoutes');
+app.use('/dishdash', authenticateToken, authorizeRoles('chef'), scaledRecipeBusinessRoutes);
+
+const costAnalysisCrudRoutes = require('./routes/crud/costAnalysisCrudRoutes');
+app.use('/dishdash', authenticateToken, authorizeRoles('chef'), costAnalysisCrudRoutes);
+
+const costAnalysisBusinessRoutes = require('./routes/business/costAnalysisBusinessRoutes');
+app.use('/dishdash', authenticateToken, authorizeRoles('chef'), costAnalysisBusinessRoutes);
+
+const calendarCrudRoutes = require('./routes/crud/calendarCrudRoutes');
+app.use('/dishdash', authenticateToken, authorizeRoles('chef'), calendarCrudRoutes);
+
+const calendarBusinessRoutes = require('./routes/business/calendarBusinessRoutes');
+app.use('/dishdash', authenticateToken, authorizeRoles('chef'), calendarBusinessRoutes);
+
+const calendarMeetingRoutes = require('./routes/crud/calendarRoutes');
+app.use('/dishdash', authenticateToken, authorizeRoles('chef'), calendarMeetingRoutes);
+
+// Rutas de recetas (GET para ambos, POST/PUT/DELETE controlado en el archivo de rutas)
 const recipeCrudRoutes = require('./routes/crud/recipeCrudRoutes');
 app.use('/dishdash', authenticateToken, recipeCrudRoutes);
 
 const recipeBusinessRoutes = require('./routes/business/recipeBusinessRoutes');
 app.use('/dishdash', authenticateToken, recipeBusinessRoutes);
 
-const unitsRoutes = require('./routes/crud/unitsCrudRoutes');
-app.use('/dishdash', authenticateToken, unitsRoutes);
-
-const conversionCrudRoutes = require('./routes/crud/conversionCrudRoutes');
-app.use('/dishdash', authenticateToken, conversionCrudRoutes);
-
-const conversionBusinessRoutes = require('./routes/business/conversionBusinessRoutes');
-app.use('/dishdash', authenticateToken, conversionBusinessRoutes);
-
-const scaledRecipeCrudRoutes = require('./routes/crud/scaledRecipeCrudRoutes');
-app.use('/dishdash', authenticateToken, scaledRecipeCrudRoutes);
-
-const scaledRecipeBusinessRoutes = require('./routes/business/scaledRecipeBusinessRoutes');
-app.use('/dishdash', authenticateToken, scaledRecipeBusinessRoutes);
-
-const costAnalysisCrudRoutes = require('./routes/crud/costAnalysisCrudRoutes');
-app.use('/dishdash', authenticateToken, costAnalysisCrudRoutes);
-
-const costAnalysisBusinessRoutes = require('./routes/business/costAnalysisBusinessRoutes');
-app.use('/dishdash', authenticateToken, costAnalysisBusinessRoutes);
-
+// Rutas de quotations (acceso para ambos roles)
 const quotationCrudRoutes = require('./routes/crud/quotationCrudRoutes');
 app.use('/dishdash', authenticateToken, quotationCrudRoutes);
 
 const quotationBusinessRoutes = require('./routes/business/quotationBusinessRoutes');
 app.use('/dishdash', authenticateToken, quotationBusinessRoutes);
-
-const calendarCrudRoutes = require('./routes/crud/calendarCrudRoutes');
-app.use('/dishdash', authenticateToken, calendarCrudRoutes);
-
-const calendarBusinessRoutes = require('./routes/business/calendarBusinessRoutes');
-app.use('/dishdash', authenticateToken, calendarBusinessRoutes);
-
-const calendarMeetingRoutes = require('./routes/crud/calendarRoutes');
-app.use('/dishdash', authenticateToken, calendarMeetingRoutes);
 
 
 

@@ -4,6 +4,13 @@ const router = express.Router();
 
 const authBusinessController = require('../../controllers/authBusinessController');
 
+// Registro manual (solo para clientes)
+router.post('/auth/register', authBusinessController.register);
+
+// Login con email/password (clientes y chefs)
+router.post('/auth/login', authBusinessController.login);
+
+// Login con Google (solo crea clientes)
 router.get('/auth/google',
     passport.authenticate('google', { 
         scope: ['profile', 'email'],

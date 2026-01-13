@@ -28,7 +28,8 @@ passport.use(
                     googleId: profile.id,
                     email: profile.emails[0].value,
                     name: profile.displayName,
-                    picture: profile.photos[0]?.value
+                    picture: profile.photos[0]?.value,
+                    role: 'client'
                 });
 
                 done(null, user);
