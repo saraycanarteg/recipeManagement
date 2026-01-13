@@ -146,18 +146,19 @@ exports.googleCallback = (req, res) => {
         { expiresIn: '7d' }
     );
 
-    res.json({
-        success: true,
-        message: 'Login successful',
-        token: token,
-        user: {
-            id: req.user._id,
-            email: req.user.email,
-            name: req.user.name,
-            role: req.user.role,
-            picture: req.user.picture
-        }
-    });
+    // Obtener URL del frontend desde variables de entorno
+    const frontendURL = process.env.FRONTEND_URL || 'https://recipefrontend-1h09.onrender.com';
+    
+    // Redirigir al frontend con el token y datos del usuario
+    const userData = encodeURIComponent(JSON.stringify({
+        id: req.user._id,
+        email: req.user.email,
+        name: req.user.name,
+        role: req.user.role,
+        picture: req.user.picture
+    }));
+
+    res.redirect(`${frontendURL}/auth/google/callback?token=${token}&user=${userData}`);
 };
 
 exports.authFailure = (req, res) => {
