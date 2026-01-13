@@ -13,7 +13,7 @@ db.once('open', () => console.log('Connected to Database'));
 // Configurar CORS
 const allowedOrigins = [
     'http://localhost:5173',
-    'https://dishdashfrontend.onrender.com'
+    'https://dishdashfrontend-wteo.onrender.com'
 ];
 
 app.use(cors({
