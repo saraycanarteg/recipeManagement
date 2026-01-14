@@ -11,20 +11,8 @@ db.on('error', (error) => console.error(error));
 db.once('open', () => console.log('Connected to Database'));
 
 // Configurar CORS
-const allowedOrigins = [
-    'http://localhost:5173',
-    'https://dishdashfrontend-wteo.onrender.com'
-];
-
 app.use(cors({
-    origin: function (origin, callback) {
-        // Permitir peticiones sin origin (como Postman) o desde orígenes permitidos
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: ['http://localhost:5173', 'https://dishdashfrontend.onrender.com'],
     credentials: true
 }));
 

@@ -147,7 +147,7 @@ exports.googleCallback = (req, res) => {
     );
 
     // Obtener URL del frontend desde variables de entorno
-    const frontendURL = process.env.FRONTEND_URL || 'https://dishdashfrontend-wteo.onrender.com';
+    const frontendURL = process.env.FRONTEND_URL || 'https://dishdashfrontend.onrender.com';
     
     // Redirigir al frontend con el token y datos del usuario
     const userData = encodeURIComponent(JSON.stringify({
