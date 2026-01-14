@@ -135,30 +135,48 @@ exports.login = async (req, res) => {
 };
 
 exports.googleCallback = (req, res) => {
-    const token = jwt.sign(
-        { 
-            id: req.user._id,
+    try {
+        // Generar token
+        const token = jwt.sign(
+            { 
+                id: req.user._id,
+                email: req.user.email,
+                name: req.user.name,
+                role: req.user.role
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: '7d' }
+        );
+
+        // Determinar URL del frontend según entorno
+        const frontendURL = process.env.NODE_ENV === 'production' 
+            ? (process.env.FRONTEND_URL_PROD || 'https://dishdashfrontend.onrender.com')
+            : (process.env.FRONTEND_URL || 'http://localhost:5173');
+        
+        // Incluir _id en el objeto user para compatibilidad con frontend
+        const userData = encodeURIComponent(JSON.stringify({
+            _id: req.user._id.toString(),
+            id: req.user._id.toString(),
             email: req.user.email,
             name: req.user.name,
-            role: req.user.role
-        },
-        process.env.JWT_SECRET,
-        { expiresIn: '7d' }
-    );
+            role: req.user.role,
+            picture: req.user.picture
+        }));
 
-    // Obtener URL del frontend desde variables de entorno
-    const frontendURL = process.env.FRONTEND_URL || 'https://dishdashfrontend.onrender.com';
-    
-    // Redirigir al frontend con el token y datos del usuario
-    const userData = encodeURIComponent(JSON.stringify({
-        id: req.user._id,
-        email: req.user.email,
-        name: req.user.name,
-        role: req.user.role,
-        picture: req.user.picture
-    }));
-
-    res.redirect(`${frontendURL}/auth/callback?token=${token}&user=${userData}`);
+        const redirectURL = `${frontendURL}/auth/callback?token=${token}&user=${userData}`;
+        
+        console.log('✅ Google OAuth Success - Redirecting to:', redirectURL);
+        
+        res.redirect(redirectURL);
+    } catch (error) {
+        console.error('❌ Error en Google callback:', error);
+        
+        const frontendURL = process.env.NODE_ENV === 'production' 
+            ? (process.env.FRONTEND_URL_PROD || 'https://dishdashfrontend.onrender.com')
+            : (process.env.FRONTEND_URL || 'http://localhost:5173');
+        
+        res.redirect(`${frontendURL}/login?error=${encodeURIComponent(error.message)}`);
+    }
 };
 
 exports.authFailure = (req, res) => {

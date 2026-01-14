@@ -9,7 +9,7 @@ passport.use(
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
             callbackURL: process.env.NODE_ENV === 'production' 
                 ? 'https://recipemanagement-caj9.onrender.com/dishdash/auth/google/callback'
-                : '/dishdash/auth/google/callback'
+                : 'http://localhost:3007/dishdash/auth/google/callback'
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
@@ -29,7 +29,9 @@ passport.use(
                     email: profile.emails[0].value,
                     name: profile.displayName,
                     picture: profile.photos[0]?.value,
-                    role: 'client'
+                    role: 'client',
+                    isActive: true,
+                    lastLogin: new Date()
                 });
 
                 done(null, user);
