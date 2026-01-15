@@ -3,13 +3,23 @@ const recipeLogic = require('./recipeLogic');
 
 exports.createRecipe = async (req, res) => {
   try {
-    const { name, servings, description, ingredients, instructions, category } = req.body;
+    let { name, servings, description, ingredients, instructions, category } = req.body;
+
+    if (typeof ingredients === 'string') {
+      ingredients = JSON.parse(ingredients);
+    }
+
 
     if (!ingredients || !servings) {
       return res.status(400).json({ message: 'Ingredients and servings are required' });
     }
 
-    const { updatedIngredients, costPerServing, pricePerServing } = await recipeLogic.calculateCosts(ingredients, servings);
+    const { updatedIngredients, costPerServing, pricePerServing } =
+      await recipeLogic.calculateCosts(ingredients, servings);
+
+    const imageUrl = req.file
+      ? `/uploads/recipes/${req.file.filename}`
+      : null;
 
     const recipe = new Recipe({
       name,
@@ -20,6 +30,7 @@ exports.createRecipe = async (req, res) => {
       category,
       costPerServing,
       pricePerServing,
+      imageUrl,
       isActive: true,
     });
 
@@ -30,6 +41,7 @@ exports.createRecipe = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
 
 exports.getRecipesByCategory = async (req, res) => {
   try {

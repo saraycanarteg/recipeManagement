@@ -40,6 +40,10 @@ exports.updateRecipe = async (req, res) => {
     updates.costPerServing = costPerServing;
     updates.pricePerServing = pricePerServing;
 
+    if (req.file) {
+      updates.imageUrl = `/uploads/recipes/${req.file.filename}`;
+    }
+    
     Object.assign(recipe, updates);
 
     const updatedRecipe = await recipe.save();

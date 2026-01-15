@@ -1,33 +1,35 @@
-const mongoose = require('mongoose');
+    const mongoose = require('mongoose');
 
-const recipeSchema = new mongoose.Schema(
-{
-    name: { type: String, required: true },
-    servings: { type: Number, required: true },
-    description: { type: String, required: true },
-
-    ingredients: [
+    const recipeSchema = new mongoose.Schema(
         {
-            ingredientName: { type: String, required: true },
-            productId: { type: String, required: true },
-            quantity: { type: Number, required: true },
-            unit: { type: String, required: true }
-        }
-    ],
+            name: { type: String, required: true },
+            servings: { type: Number, required: true },
+            description: { type: String, required: true },
+            imageUrl: { type: String, default: null },
 
-    instructions: [{ type: String, required: true }],
 
-    costPerServing: { type: Number, required: true },
-    pricePerServing: { type: Number, required: true },
+            ingredients: [
+                {
+                    ingredientName: { type: String, required: true },
+                    productId: { type: String, required: true },
+                    quantity: { type: Number, required: true },
+                    unit: { type: String, required: true }
+                }
+            ],
 
-    category: { type: String, required: true },
+            instructions: [{ type: String, required: true }],
 
-    isActive: { type: Boolean, default: true },
-    deletedAt: { type: Date, default: null }
-},
-{
-    collection: 'recipe',
-    timestamps: true
-});
+            costPerServing: { type: Number, required: true },
+            pricePerServing: { type: Number, required: true },
 
-module.exports = mongoose.model('Recipe', recipeSchema);
+            category: { type: String, required: true },
+
+            isActive: { type: Boolean, default: true },
+            deletedAt: { type: Date, default: null }
+        },
+        {
+            collection: 'recipe',
+            timestamps: true
+        });
+
+    module.exports = mongoose.model('Recipe', recipeSchema);
