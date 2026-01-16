@@ -57,8 +57,11 @@ exports.getRecipesByCategory = async (req, res) => {
 
 exports.getRecipeByName = async (req, res) => {
   try {
-    const recipe = await Recipe.findOne({ name: req.params.name, isActive: true });
-    if (!recipe) return res.status(404).json({ message: 'Recipe not found' });
+    const recipe = await Recipe.find({ 
+      name: { $regex: req.params.name, $options: 'i' }, 
+      isActive: true 
+    });
+    if (!recipe || recipe.length === 0) return res.status(404).json({ message: 'Recipe not found' });
     res.json(recipe);
   } catch (err) {
     res.status(500).json({ message: err.message });
