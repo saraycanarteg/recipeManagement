@@ -6,14 +6,14 @@ exports.register = async (req, res) => {
     try {
         const { email, password, name } = req.body;
 
-        // Validar campos requeridos
+      
         if (!email || !password || !name) {
             return res.status(400).json({ 
                 message: 'Email, password, and name are required' 
             });
         }
 
-        // Verificar si el usuario ya existe
+   
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ 
@@ -21,11 +21,11 @@ exports.register = async (req, res) => {
             });
         }
 
-        // Hashear la contraseña
+      
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // Crear el usuario (siempre como client)
+      
         const user = await User.create({
             email,
             password: hashedPassword,
@@ -33,7 +33,7 @@ exports.register = async (req, res) => {
             role: 'client'
         });
 
-        // Generar token
+ 
         const token = jwt.sign(
             { 
                 id: user._id,
@@ -68,14 +68,14 @@ exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // Validar campos requeridos
+     
         if (!email || !password) {
             return res.status(400).json({ 
                 message: 'Email and password are required' 
             });
         }
 
-        // Buscar el usuario
+
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(401).json({ 
@@ -83,14 +83,14 @@ exports.login = async (req, res) => {
             });
         }
 
-        // Verificar que el usuario tenga password (no sea cuenta de Google)
+      
         if (!user.password) {
             return res.status(401).json({ 
                 message: 'This account uses Google login. Please sign in with Google.' 
             });
         }
 
-        // Verificar la contraseña
+ 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             return res.status(401).json({ 
@@ -98,11 +98,11 @@ exports.login = async (req, res) => {
             });
         }
 
-        // Actualizar último login
+    
         user.lastLogin = new Date();
         await user.save();
 
-        // Generar token
+ 
         const token = jwt.sign(
             { 
                 id: user._id,
@@ -136,7 +136,7 @@ exports.login = async (req, res) => {
 
 exports.googleCallback = (req, res) => {
     try {
-        // Generar token
+ 
         const token = jwt.sign(
             { 
                 id: req.user._id,
@@ -148,12 +148,12 @@ exports.googleCallback = (req, res) => {
             { expiresIn: '7d' }
         );
 
-        // Determinar URL del frontend según entorno
+   
         const frontendURL = process.env.NODE_ENV === 'production' 
             ? (process.env.FRONTEND_URL_PROD || 'https://dishdashfrontend.onrender.com')
             : (process.env.FRONTEND_URL || 'http://localhost:5173');
         
-        // Incluir _id en el objeto user para compatibilidad con frontend
+    
         const userData = encodeURIComponent(JSON.stringify({
             _id: req.user._id.toString(),
             id: req.user._id.toString(),
@@ -165,11 +165,11 @@ exports.googleCallback = (req, res) => {
 
         const redirectURL = `${frontendURL}/auth/callback?token=${token}&user=${userData}`;
         
-        console.log('✅ Google OAuth Success - Redirecting to:', redirectURL);
+        console.log(' Google OAuth Success - Redirecting to:', redirectURL);
         
         res.redirect(redirectURL);
     } catch (error) {
-        console.error('❌ Error en Google callback:', error);
+        console.error(' Error en Google callback:', error);
         
         const frontendURL = process.env.NODE_ENV === 'production' 
             ? (process.env.FRONTEND_URL_PROD || 'https://dishdashfrontend.onrender.com')

@@ -29,11 +29,11 @@ app.use(passport.initialize());
 const authenticateToken = require('./middleware/auth');
 const authorizeRoles = require('./middleware/authorizeRoles');
 
-// Rutas de autenticación (sin protección)
+
 const authBusinessRoutes = require('./routes/business/authBusinessRoutes');
 app.use('/dishdash', authBusinessRoutes);
 
-// Rutas solo para chef
+
 const userCrudRoutes = require('./routes/crud/userCrudRoutes');
 app.use('/dishdash', authenticateToken, authorizeRoles('chef'), userCrudRoutes);
 
@@ -70,14 +70,14 @@ app.use('/dishdash', authenticateToken, authorizeRoles('chef'), calendarBusiness
 const calendarMeetingRoutes = require('./routes/crud/calendarRoutes');
 app.use('/dishdash', authenticateToken, authorizeRoles('chef'), calendarMeetingRoutes);
 
-// Rutas de recetas (GET para ambos, POST/PUT/DELETE controlado en el archivo de rutas)
+
 const recipeCrudRoutes = require('./routes/crud/recipeCrudRoutes');
 app.use('/dishdash', authenticateToken, recipeCrudRoutes);
 
 const recipeBusinessRoutes = require('./routes/business/recipeBusinessRoutes');
 app.use('/dishdash', authenticateToken, recipeBusinessRoutes);
 
-// Rutas de quotations (acceso para ambos roles)
+
 const quotationCrudRoutes = require('./routes/crud/quotationCrudRoutes');
 app.use('/dishdash', authenticateToken, quotationCrudRoutes);
 

@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const authenticateToken = require('../../middleware/auth');
+const authorizeRoles = require('../../middleware/authorizeRoles');
 const {
     calculateIngredientsCost,
     calculateProductCost,
@@ -7,7 +9,7 @@ const {
     calculateCompleteCostAnalysis
 } = require('../../controllers/costAnalysisBusinessController');
 
-router.post('/costanalysis/calculate/ingredients-cost', async (req, res) => {
+router.post('/costanalysis/calculate/ingredients-cost', authenticateToken, authorizeRoles('chef'), async (req, res) => {
     try {
         const { selectedIngredients } = req.body;
         
@@ -22,7 +24,7 @@ router.post('/costanalysis/calculate/ingredients-cost', async (req, res) => {
     }
 });
 
-router.post('/costanalysis/calculate/product-cost', async (req, res) => {
+router.post('/costanalysis/calculate/product-cost', authenticateToken, authorizeRoles('chef'), async (req, res) => {
     try {
         const { 
             ingredientsCost,
@@ -47,7 +49,7 @@ router.post('/costanalysis/calculate/product-cost', async (req, res) => {
     }
 });
 
-router.post('/costanalysis/calculate/taxes', async (req, res) => {
+router.post('/costanalysis/calculate/taxes', authenticateToken, authorizeRoles('chef'), async (req, res) => {
     try {
         const { 
             suggestedPricePerServing,
