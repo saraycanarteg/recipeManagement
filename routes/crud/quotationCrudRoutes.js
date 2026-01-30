@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Quotation = require('../../models/quotation');
-const {
-    createCalendarEventForQuotation
-} = require('../../controllers/calendarBusinessController');
 
 router.post('/quotations', async (req, res) => {
     try {
@@ -84,10 +81,6 @@ router.patch('/quotations/:id/status', async (req, res) => {
         );
 
         if (!quotation) return res.status(404).json({ message: 'Quotation not found' });
-
-        if (status === 'approved') {
-            await createCalendarEventForQuotation(quotation);
-        }
 
         res.json(quotation);
 

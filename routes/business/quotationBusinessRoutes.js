@@ -7,6 +7,9 @@ const {
     calculateQuotationTaxes,
     estimateClientQuotationCost
 } = require('../../controllers/quotationBusinessController');
+const {
+    createCalendarEventForQuotation
+} = require('../../controllers/calendarBusinessController');
 
 router.post('/quotations/client-request', async (req, res) => {
     try {
@@ -151,6 +154,28 @@ router.post('/quotations/chef-quotation', async (req, res) => {
         res.status(500).json({ 
             message: 'Error creating chef quotation', 
             error: error.message 
+        });
+    }
+});
+
+router.patch('/quotations/:id/approve', async (req, res) => {
+    try {
+        const quotation = await Quotation.findByIdAndUpdate(
+            req.params.id,
+            { status: 'approved' },
+            { new: true }
+        );
+
+        if (!quotation) return res.status(404).json({ message: 'Quotation not found' });
+
+        await createCalendarEventForQuotation(quotation);
+
+        res.json(quotation);
+
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error approving quotation',
+            error: error.message
         });
     }
 });
