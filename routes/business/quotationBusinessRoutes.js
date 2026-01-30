@@ -158,7 +158,10 @@ router.post('/quotations/chef-quotation', async (req, res) => {
     }
 });
 
-router.patch('/quotations/:id/approve', async (req, res) => {
+// PATCH - Aprobar cotización y crear evento de calendario (BUSINESS LOGIC)
+// Este endpoint combina: 1) Actualizar estado (CRUD), 2) Crear evento automático (Business)
+// Permanece en Business porque la creación del evento es lógica compleja
+router.patch('/quotations/:id/approve-and-schedule', async (req, res) => {
     try {
         const quotation = await Quotation.findByIdAndUpdate(
             req.params.id,
@@ -168,13 +171,14 @@ router.patch('/quotations/:id/approve', async (req, res) => {
 
         if (!quotation) return res.status(404).json({ message: 'Quotation not found' });
 
+        // Lógica de negocio: crear evento de calendario automáticamente
         await createCalendarEventForQuotation(quotation);
 
         res.json(quotation);
 
     } catch (error) {
         res.status(500).json({
-            message: 'Error approving quotation',
+            message: 'Error approving quotation and scheduling event',
             error: error.message
         });
     }

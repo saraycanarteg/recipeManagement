@@ -21,7 +21,34 @@ exports.getRecipeById = async (req, res) => {
   }
 };
 
+// PUT - Actualizar receta SIN recalcular costos (CRUD PURO)
+// NOTA: Esta versión solo actualiza los campos directamente sin cálculos
 exports.updateRecipe = async (req, res) => {
+  try {
+    const recipe = await Recipe.findById(req.params.id);
+    if (!recipe) {
+      return res.status(404).json({ message: 'Recipe not found' });
+    }
+
+    const updates = req.body;
+
+    // Si se sube una nueva imagen
+    if (req.file) {
+      updates.imageUrl = `/uploads/recipes/${req.file.filename}`;
+    }
+    
+    Object.assign(recipe, updates);
+
+    const updatedRecipe = await recipe.save();
+    res.json(updatedRecipe);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+// PUT - Actualizar receta CON recálculo de costos (TIENE BUSINESS LOGIC)
+// NOTA: Esta versión automáticamente recalcula costos cuando cambian ingredientes o porciones
+exports.updateRecipeWithCalculations = async (req, res) => {
   try {
     const recipe = await Recipe.findById(req.params.id);
     if (!recipe) {
