@@ -35,8 +35,6 @@ router.get('/costanalysis/recipe/:id/ingredients-options', async (req, res) => {
     }
 });
 
-// POST - Guardar análisis de costos ya calculado (CRUD PURO)
-// NOTA: Para crear con cálculos automáticos, usar POST /dishdash/costanalysis/calculate-and-save (Business Routes)
 router.post('/costanalysis', async (req, res) => {
     try {
         const document = new CostAnalysis(req.body);
@@ -82,8 +80,6 @@ router.get('/costanalysis/:id', async (req, res) => {
     }
 });
 
-// PUT - Actualizar análisis de costos con datos ya calculados (CRUD PURO)
-// NOTA: Para recalcular automáticamente, usar PUT /dishdash/costanalysis/:id/recalculate (Business Routes)
 router.put('/costanalysis/:id', async (req, res) => {
     try {
         const document = await CostAnalysis.findByIdAndUpdate(
@@ -105,7 +101,6 @@ router.put('/costanalysis/:id', async (req, res) => {
     }
 });
 
-// DELETE - Eliminar análisis de costos (CRUD PURO)
 router.delete('/costanalysis/:id', async (req, res) => {
     try {
         const document = await CostAnalysis.findByIdAndDelete(req.params.id);
