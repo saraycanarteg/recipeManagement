@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const recipeBusinessController = require('../../controllers/recipeBusinessController');
-const recipeCrudController = require('../../controllers/recipeCrudController');
 const authorizeRoles = require('../../middleware/authorizeRoles');
 const authenticateToken = require('../../middleware/auth');
 const upload = require('../../middleware/upload');
 
-// POST - Crear receta con cálculo automático de costos (BUSINESS LOGIC)
+// POST - Crear receta (CRUD PURO - sin cálculos)
 router.post(
   '/recipe',
   authenticateToken,
@@ -15,13 +14,20 @@ router.post(
   recipeBusinessController.createRecipe
 );
 
-// PUT - Actualizar receta con recálculo de costos (BUSINESS LOGIC)
-router.put(
-  '/recipe/:id/with-calculations',
+// POST - Calcular y actualizar costos de receta (BUSINESS LOGIC)
+router.post(
+  '/recipe/:id/calculate-costs',
   authenticateToken,
   authorizeRoles('chef'),
-  upload.single('image'),
-  recipeCrudController.updateRecipeWithCalculations
+  recipeBusinessController.calculateRecipeCosts
+);
+
+// PUT - Recalcular costos cuando cambian ingredientes o servings (BUSINESS LOGIC)
+router.put(
+  '/recipe/:id/recalculate-costs',
+  authenticateToken,
+  authorizeRoles('chef'),
+  recipeBusinessController.recalculateRecipeCosts
 );
 
 // GET - Buscar recetas por categoría
