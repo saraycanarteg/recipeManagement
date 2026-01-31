@@ -1,8 +1,9 @@
 const axios = require('axios');
 
+// Este backend-crud ES el servidor CRUD, por lo que apunta a sí mismo
 const CRUD_API =
     process.env.CRUD_API_URL ||
-    'https://recipemanagement-caj9.onrender.com/dishdash';
+    'https://recipemanagementcrud.onrender.com/dishdash';
 
 module.exports = {
 

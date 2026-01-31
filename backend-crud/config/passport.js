@@ -8,7 +8,7 @@ passport.use(
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
             callbackURL: process.env.NODE_ENV === 'production' 
-                ? 'https://recipemanagement-caj9.onrender.com/dishdash/auth/google/callback'
+                ? 'https://recipemanagementcrud.onrender.com/dishdash/auth/google/callback'
                 : 'http://localhost:3007/dishdash/auth/google/callback'
         },
         async (accessToken, refreshToken, profile, done) => {

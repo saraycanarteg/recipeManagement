@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const crudService = require('../../config/crudService');
 
 router.get('/unit-groups', async (req, res) => {
     try {
-        const response = await axios.get('https://recipemanagement-caj9.onrender.com/dishdash/units');
+        const CRUD_API = process.env.CRUD_API_URL || 'https://recipemanagementcrud.onrender.com/dishdash';
+        const response = await axios.get(`${CRUD_API}/units`);
         const units = response.data;
 
         res.json({

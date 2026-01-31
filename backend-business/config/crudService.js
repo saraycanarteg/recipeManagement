@@ -2,7 +2,7 @@ const axios = require('axios');
 
 const CRUD_API =
     process.env.CRUD_API_URL ||
-    'https://recipemanagement-caj9.onrender.com/dishdash';
+    'https://recipemanagementcrud.onrender.com/dishdash';
 
 module.exports = {
 
