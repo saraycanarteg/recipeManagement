@@ -27,12 +27,6 @@ const authenticateToken = require('./middleware/auth');
 const authorizeRoles = require('./middleware/authorizeRoles');
 
 // ============================================
-// AUTH ROUTES (Business but allowed in CRUD)
-// ============================================
-const authBusinessRoutes = require('./routes/business/authBusinessRoutes');
-app.use('/dishdash', authBusinessRoutes);
-
-// ============================================
 // CRUD ROUTES 
 // ============================================
 
@@ -76,11 +70,6 @@ app.get('/', (req, res) => {
         port: port,
         database: 'MongoDB',
         endpoints: {
-            auth: {
-                register: 'POST /dishdash/auth/register',
-                login: 'POST /dishdash/auth/login',
-                verify: 'GET /dishdash/auth/verify'
-            },
             ingredients: {
                 getAll: 'GET /dishdash/ingredients',
                 getByCategory: 'GET /dishdash/ingredients/category/:category',
