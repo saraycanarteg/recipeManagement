@@ -1,7 +1,30 @@
 const express = require('express');
 const router = express.Router();
 const Quotation = require('../../models/quotation');
-const { createClientMeetingEvent } = require('../../controllers/calendarBusinessController');
+const CalendarEvent = require('../../models/calendarEvent');
+
+async function eventExists({ type, quotationId, startDate }) {
+    return await CalendarEvent.findOne({ type, quotationId, startDate });
+}
+
+async function createClientMeetingEvent(quotation, meetingDate) {
+    const exists = await eventExists({
+        type: 'meeting',
+        quotationId: quotation._id,
+        startDate: meetingDate
+    });
+
+    if (exists) return exists;
+
+    return await CalendarEvent.create({
+        title: `Reunión con ${quotation.clientName}`,
+        type: 'meeting',
+        startDate: meetingDate,
+        quotationId: quotation._id,
+        color: '#36b9cc',
+        icon: 'calendar'
+    });
+}
 
 router.post('/calendar/meeting', async (req, res) => {
     try {
