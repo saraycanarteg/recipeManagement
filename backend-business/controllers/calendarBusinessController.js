@@ -122,10 +122,14 @@ async function eventExists({ type, quotationId, startDate }) {
 
 
 async function createCalendarEventForQuotation(quotation) {
-    // Crear evento local
-    const eventStartDate = new Date(quotation.eventInfo.eventDate);
-    const [hours, minutes] = quotation.eventInfo.eventTime.split(':');
-    eventStartDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+    // Crear evento local con zona horaria correcta
+    // Extraer solo la fecha (sin hora) del eventDate
+    const eventDateStr = quotation.eventInfo.eventDate.toString();
+    const eventDateOnly = eventDateStr.split('T')[0]; // "2026-02-15"
+    const [hours, minutes] = quotation.eventInfo.eventTime.split(':'); // ["18", "00"]
+    
+    // Crear fecha en zona horaria local combinando fecha + hora
+    const eventStartDate = new Date(`${eventDateOnly}T${hours}:${minutes}:00`);
 
     const exists = await eventExists({
         type: 'delivery',
