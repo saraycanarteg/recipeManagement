@@ -7,6 +7,17 @@ const { google } = require('googleapis');
 // GOOGLE CALENDAR HELPERS
 // ============================================
 
+// Función helper para formato local (sin UTC)
+function toLocalDateTime(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+}
+
 // Helper para obtener cliente de Google Calendar autenticado
 async function getGoogleCalendarClient(userId) {
     const user = await User.findById(userId);
@@ -40,16 +51,18 @@ async function getGoogleCalendarClient(userId) {
 // Crear evento en Google Calendar
 async function createGoogleCalendarEvent(calendar, eventData) {
     try {
+        const endDate = eventData.endDate || new Date(eventData.startDate.getTime() + 4 * 60 * 60 * 1000);
+        
         const event = {
             summary: eventData.title,
             description: eventData.description || '',
             location: eventData.location || '',
             start: {
-                dateTime: eventData.startDate.toISOString(),
-                timeZone: 'America/Guayaquil', // Ajusta según tu zona horaria
+                dateTime: toLocalDateTime(eventData.startDate),
+                timeZone: 'America/Guayaquil',
             },
             end: {
-                dateTime: eventData.endDate ? eventData.endDate.toISOString() : new Date(eventData.startDate.getTime() + 2 * 60 * 60 * 1000).toISOString(), // +2 horas por defecto
+                dateTime: toLocalDateTime(endDate),
                 timeZone: 'America/Guayaquil',
             },
             colorId: '2', // Verde para eventos de trabajo
@@ -70,16 +83,18 @@ async function createGoogleCalendarEvent(calendar, eventData) {
 // Actualizar evento en Google Calendar
 async function updateGoogleCalendarEvent(calendar, googleEventId, eventData) {
     try {
+        const endDate = eventData.endDate || new Date(eventData.startDate.getTime() + 4 * 60 * 60 * 1000);
+        
         const event = {
             summary: eventData.title,
             description: eventData.description || '',
             location: eventData.location || '',
             start: {
-                dateTime: eventData.startDate.toISOString(),
+                dateTime: toLocalDateTime(eventData.startDate),
                 timeZone: 'America/Guayaquil',
             },
             end: {
-                dateTime: eventData.endDate ? eventData.endDate.toISOString() : new Date(eventData.startDate.getTime() + 2 * 60 * 60 * 1000).toISOString(),
+                dateTime: toLocalDateTime(endDate),
                 timeZone: 'America/Guayaquil',
             },
         };
