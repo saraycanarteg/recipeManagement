@@ -1,6 +1,6 @@
 const Recipe = require('../models/recipe');
 const axios = require('axios');
-const BUSINESS_API = process.env.BUSINESS_API_URL || 'http://localhost:3007/dishdash';
+const BUSINESS_API = process.env.BUSINESS_API_URL || 'http://localhost:3008/dishdash';
 
 exports.createRecipe = async (req, res) => {
   try {
