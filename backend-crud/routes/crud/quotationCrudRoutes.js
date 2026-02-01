@@ -186,4 +186,20 @@ router.delete('/quotations/:id', async (req, res) => {
     }
 });
 
+// GET - Obtener cotizaciones aprobadas con información completa para calendario
+router.get('/quotations/calendar', async (req, res) => {
+    try {
+        const quotations = await Quotation.find({ 
+            status: { $in: ['approved', 'completed'] }
+        }).sort({ 'eventInfo.eventDate': 1 });
+        
+        res.json(quotations);
+    } catch (error) {
+        res.status(500).json({ 
+            message: 'Error fetching quotations for calendar', 
+            error: error.message 
+        });
+    }
+});
+
 module.exports = router;
