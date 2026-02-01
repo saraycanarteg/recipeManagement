@@ -37,6 +37,7 @@ router.get('/auth/verify', authBusinessController.verifyToken);
 // ============================================
 
 // Iniciar vinculación de Google Calendar (requiere JWT y rol chef)
+// Acepta token por header o query parameter: ?token=xxx
 router.get('/auth/google-calendar/link',
     authenticateToken,
     authorizeRoles('chef'),
