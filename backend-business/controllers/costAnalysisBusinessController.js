@@ -71,6 +71,10 @@ async function calculateIngredientsCost(selectedIngredients) {
     }; 
 }
 
+function calculateIndirectCosts(ingredientsCost) {
+    return round2(ingredientsCost * 0.25);
+}
+
 function calculateProductCost(ingredientsCost, indirectCost, servings, margin = 3) {
     if (ingredientsCost === undefined || ingredientsCost < 0) {
         throw new Error('ingredientsCost is required and must be >= 0');
@@ -161,6 +165,7 @@ async function calculateCompleteCostAnalysis(recipeId, selectedIngredients, ivaP
 
 module.exports = {
     processIngredientLine,
+    calculateIndirectCosts,
     calculateIngredientsCost,
     calculateProductCost,
     calculateTaxes,
