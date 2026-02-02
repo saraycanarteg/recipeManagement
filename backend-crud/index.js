@@ -61,7 +61,7 @@ const recipeCrudRoutes = require('./routes/crud/recipeCrudRoutes');
 app.use('/dishdash', authenticateToken, recipeCrudRoutes);
 
 const quotationCrudRoutes = require('./routes/crud/quotationCrudRoutes');
-app.use('/dishdash', authenticateToken, quotationCrudRoutes);
+app.use('/dishdash', authenticateToken, authorizeRoles('chef', 'client'), quotationCrudRoutes);
 
 // ============================================
 // API Documentation
