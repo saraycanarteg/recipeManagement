@@ -87,11 +87,11 @@ function calculateProductCost(ingredientsCost, indirectCost, servings, margin = 
     if (!servings || servings <= 0) {
         throw new Error('servings must be a positive number');
     }
-
     const totalCost = round2(ingredientsCost + indirectCost);
     const costPerServing = round2(totalCost / servings);
-    const suggestedPricePerServing = round2(costPerServing * margin);
-    
+
+    const suggestedPricePerServing =
+        round2(costPerServing * (1 + margin / 100));
     return {
         totalCost,
         costPerServing,
