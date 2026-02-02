@@ -33,6 +33,9 @@ const authorizeRoles = require('./middleware/authorizeRoles');
 const recipePublicRoutes = require('./routes/crud/recipePublicRoutes');
 app.use('/dishdash/public', recipePublicRoutes);
 
+const quotationPublicRoutes = require('./routes/crud/quotationPublicRoutes');
+app.use('/dishdash', quotationPublicRoutes);
+
 const userCrudRoutes = require('./routes/crud/userCrudRoutes');
 app.use('/dishdash', authenticateToken, authorizeRoles('chef'), userCrudRoutes);
 
